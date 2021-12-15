@@ -17,6 +17,7 @@ describe("Vendor", () => {
     let payer2: any;
     
     let vendor: any;
+    let vendorV2: any;
     let sst: any;
     let dai_token: any;
     let agregator_dai_to_sst: any;
@@ -55,6 +56,11 @@ describe("Vendor", () => {
         const Test721 = await ethers.getContractFactory("Test721");
         test721 = await Test721.deploy();
         await test721.deployed();
+
+/*        const VendorV2 = await ethers.getContractFactory("VendorV2");
+        vendorV2 = await VendorV2.deploy();
+        await vendorV2.deployed();*/
+
 
         const Vendor = await ethers.getContractFactory("Vendor");
         vendor = await upgrades.deployProxy(Vendor, [sst.address, agregator_eth_to_sst.address, test721.address], {kind: 'uups'});
@@ -503,6 +509,26 @@ describe("Vendor", () => {
         it("Should be fail. Ownable: caller is not the owner", async () => {
             await truffleAssert.reverts(vendor.connect(payer1).claimAll(), "Ownable: caller is not the owner");
         });
+    });
+
+    describe( "upgrades.upgradeProxy", function() {
+
+        it("Should successfully. Update to V2", async () => {
+            const VendorV2 = await ethers.getContractFactory("VendorV2");
+            const vendorV2 = await upgrades.upgradeProxy(vendor, VendorV2);
+            assert.equal("V2", await vendorV2.getVersion());
+        });
+
+        it("Should successfully. Update to V2 and back to V1", async () => {
+            const VendorV2 = await ethers.getContractFactory("VendorV2");
+            const vendorV2 = await upgrades.upgradeProxy(vendor, VendorV2);
+            assert.equal("V2", await vendorV2.getVersion());
+
+            const Vendor = await ethers.getContractFactory("Vendor");
+            const vendorV3 = await upgrades.upgradeProxy(vendor, Vendor);
+            assert.equal("V1", await vendor.getVersion());
+        });
+
     });
 });
 

@@ -33,7 +33,7 @@ contract Vendor is Initializable, OwnableUpgradeable, UUPSUpgradeable{
 
     event BuyToken(address indexed _from, address indexed _to, uint256 _amount);
 
-    function getVersion() external virtual pure returns (bytes32){
+    function getVersion() external virtual pure returns (string memory){
         return "V1";
     }
 
@@ -171,7 +171,7 @@ contract Vendor is Initializable, OwnableUpgradeable, UUPSUpgradeable{
 }
 
 contract VendorV2 is Vendor{
-    function getVersion() external pure override returns (bytes32){
+    function getVersion() external pure override returns (string memory){
         return "V2";
     }
 
