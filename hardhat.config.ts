@@ -2,9 +2,9 @@ import * as dotenv from 'dotenv'
 dotenv.config();
 
 import "@nomiclabs/hardhat-truffle5";
-//import "@nomiclabs/hardhat-etherscan";
-//import "@nomiclabs/hardhat-ethers";
 require("@nomiclabs/hardhat-web3");
+import "@nomiclabs/hardhat-ethers";
+import '@openzeppelin/hardhat-upgrades';
 require('solidity-coverage');
 
 /**
