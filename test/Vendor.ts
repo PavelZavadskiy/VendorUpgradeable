@@ -449,6 +449,7 @@ describe("Vendor", () => {
             const amount_sst_after_contract = await sst.balanceOf(vendor.address);
             assert.equal(true, amount_sst_after_payer.eq(amount_sst_before_payer));
             assert.equal(true, amount_sst_after_contract.eq(amount_sst_before_contract));
+            console.log();
         });
     });
 
